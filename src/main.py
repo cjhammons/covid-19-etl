@@ -7,9 +7,9 @@ from extract import *
 from transform import *
 from load import *
 import configparser
-import psycopg2
 import pandas as pd
 import logging
+from sqlalchemy import create_engine
 
 def main():
     # Set up logging
@@ -23,30 +23,33 @@ def main():
     # Extract data from DB
     # First we read the DB config from the config.ini file
     logger.info("Reading config.ini")
-    configparser = configparser.ConfigParser()
-    configparser.read("config.ini")
+    config = configparser.ConfigParser()
+    config.read("config.ini")
     logger.info("Connecting to DB")
-    conn = psycopg2.connect(
-        host=configparser["DB"]["host"],
-        port=configparser,
-        database=configparser["DB"]["database"],
-        user=configparser["DB"]["user"],
-        password=configparser["DB"]["password"]
-    )
+    host=config["DB"]["host"],
+    port=config["DB"]["port"],
+    database=config["DB"]["database"],
+    user=config["DB"]["user"],
+    password=config["DB"]["password"]
+    try:
+        engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{database}')
+    except Exception as e:
+        logger.error("Could not connect to DB: %s" % e)
+        exit(1)
     logger.info("Begining Extraction")
 
     logger.info("Extracting county_population")
-    df_county_population = extract_county_population(conn)
+    df_county_population = extract_county_population(engine, logger)
 
     logger.info("Extracting mask_use_by_county")
-    df_mask_use_by_county = extract_mask_use_by_county(conn)
+    df_mask_use_by_county = extract_mask_use_by_county(engine, logger)
 
     logger.info("Extracting us_state_cumulative")
-    df_us_state_cumulative = extract_us_state_cumulative(conn)
+    df_us_state_cumulative = extract_us_state_cumulative(engine, logger)
 
     logger.info("Extraction complete")
     logger.info("Closing DB connection")
-    conn.close()
+    engine.close()
     
     # Transform data
     # We pass the extracted data to the transform functions
@@ -64,11 +67,11 @@ def main():
     logger.info("Begining Load into S3")
     s3_client = boto3.client(
         's3',
-        aws_access_key_id=configparser["AWS"]["aws_access_key_id"],
-        aws_secret_access_key=configparser["AWS"]["aws_secret_access_key"],
-        region_name=configparser["AWS"]["region_name"]
+        aws_access_key_id=config["AWS"]["access_key"],
+        aws_secret_access_key=config["AWS"]["secret_access_key"],
+        region_name=config["AWS"]["region_name"]
     )
-    bucket_name = configparser["S3"]["bucket_name"]
+    bucket_name = config["S3"]["bucket_name"]
     logger.info("Exporting Incremental Cases and Deaths to CSV")
     incremental_path = load_to_csv(df_incremental_data, 'incremental_data.csv')
     
