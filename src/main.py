@@ -30,11 +30,10 @@ def main():
     
     # Transform data
     # We pass the extracted data to the transform functions
-    # incremental_data = calculate_incremental(data)
-    # rolling_data = calculate_rolling_average(data)
-    # mask_score = calculate_mask_wearer_score(data)
+    df_incremental_data = calculate_incremental(df_county_population)
+    df_rolling_data = calculate_rolling_avg(df_incremental_data)
+    df_mask_score = calculate_mask_wearer_score(df_mask_use_by_county, df_county_population)
     
     # Load to CSV and S3
-    load_to_csv(incremental_data, "incremental.csv")
-    upload_to_s3("incremental.csv", "s3_path")
+
     
