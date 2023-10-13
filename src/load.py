@@ -6,9 +6,9 @@
 
 import boto3
 import pandas as pd
-
+import os 
 def load_to_csv(df, filename):
-    file_path = 'data/' + filename
+    file_path = 'export/' + filename
     df.to_csv(file_path, index=False)
     return file_path
     

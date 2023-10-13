@@ -10,12 +10,12 @@ def calculate_incremental(df):
     df_incremental = df.sort_values(by=['state_name', 'date'])
     df_incremental['daily_cases'] = df_incremental.groupby('state_name')['cases'].diff().fillna(0)
     df_incremental['daily_deaths'] = df_incremental.groupby('state_name')['deaths'].diff().fillna(0)
-    return df_incremental[['date', 'state_name', 'Cases', 'Deaths']].rename(columns={'date': 'Date', 'state_name': 'State'})
+    return df_incremental[['date', 'state_name', 'cases', 'daily_cases', 'daily_deaths', 'deaths']].rename(columns={'date': 'Date', 'state_name': 'State'})
 
 # Calculate a rolling average, per state, of cases and deaths in the last seven days
 def calculate_rolling_avg(df):
-    df['Rolling Avg Cases'] = df.groupby('state_name')['daily_cases'].transform(lambda x: x.rolling(window=7).mean())
-    df['Rolling Avg Deaths'] = df.groupby('state_name')['daily_deaths'].transform(lambda x: x.rolling(window=7).mean())
+    df['Rolling Avg Cases'] = df.groupby('State')['daily_cases'].transform(lambda x: x.rolling(window=7).mean())
+    df['Rolling Avg Deaths'] = df.groupby('State')['daily_deaths'].transform(lambda x: x.rolling(window=7).mean())
     return df[['Date', 'State', 'Rolling Avg Cases', 'Rolling Avg Deaths']]
 
 

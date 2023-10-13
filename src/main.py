@@ -15,24 +15,25 @@ def main():
     # Set up logging
     logger = logging.getLogger(__name__)
     console_handler = logging.StreamHandler()
+    logger.addHandler(console_handler)
     console_handler.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
 
     # Extract data from DB
     # First we read the DB config from the config.ini file
     logger.info("Reading config.ini")
     config = configparser.ConfigParser()
     config.read("config.ini")
-    logger.info("Connecting to DB")
-    host=config["DB"]["host"],
-    port=config["DB"]["port"],
-    database=config["DB"]["database"],
-    user=config["DB"]["user"],
+    host=config["DB"]["host"]
+    port=config["DB"]["port"]
+    database=config["DB"]["database"]
+    user=config["DB"]["user"]
     password=config["DB"]["password"]
+    connection_string = f'postgresql://{user}:{password}@{host}:{int(port)}/{database}'
     try:
-        engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{database}')
+        logger.info("Connecting to DB using string %s" % connection_string)
+        engine = create_engine(connection_string)
     except Exception as e:
         logger.error("Could not connect to DB: %s" % e)
         exit(1)
@@ -49,7 +50,7 @@ def main():
 
     logger.info("Extraction complete")
     logger.info("Closing DB connection")
-    engine.close()
+    engine.dispose()
     
     # Transform data
     # We pass the extracted data to the transform functions
