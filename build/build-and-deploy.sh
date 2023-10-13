@@ -26,7 +26,4 @@ aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER
 # kubectl set image deployment/$KUBE_DEPLOYMENT_NAME $KUBE_DEPLOYMENT_CONTAINER_NAME=$ECR_REGISTRY/$IMAGE_NAME:latest
 kubectl apply -f k8s/cronjob.yaml
 
-# Rollout status
-kubectl rollout status deployment/$KUBE_DEPLOYMENT_NAME
-
 echo "Deployment complete."
