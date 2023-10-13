@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+# This script builds the Docker image, pushes it to ECR, and deploys it to EKS as a cronjob.
+
 # Configuration
 AWS_REGION="us-west-1"
 ECR_REGISTRY="587344276961.dkr.ecr.us-west-1.amazonaws.com/covid-19-etl-registry"
