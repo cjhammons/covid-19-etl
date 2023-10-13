@@ -14,10 +14,11 @@ from sqlalchemy import create_engine
 def main():
     # Set up logging
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
     console_handler = logging.StreamHandler()
     logger.addHandler(console_handler)
     console_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     console_handler.setFormatter(formatter)
 
     # Extract data from DB
@@ -74,13 +75,13 @@ def main():
     )
     bucket_name = config["S3"]["bucket_name"]
     logger.info("Exporting Incremental Cases and Deaths to CSV")
-    incremental_path = load_to_csv(df_incremental_data, 'incremental_data.csv')
+    incremental_path = load_to_csv(df_incremental_data, 'incremental_data')
     
     logger.info("Exporting Rolling Average Cases and Deaths to CSV")
-    rolling_path = load_to_csv(df_rolling_data, 'rolling_data.csv')
+    rolling_path = load_to_csv(df_rolling_data, 'rolling_data')
     
     logger.info("Exporting Mask Wearer Score to CSV")
-    mask_score_path = load_to_csv(df_mask_score, 'mask_score.csv')
+    mask_score_path = load_to_csv(df_mask_score, 'mask_score')
 
     logger.info("Uploading %s to S3" % incremental_path)
     upload_to_s3(bucket_name, incremental_path, s3_client=s3_client)

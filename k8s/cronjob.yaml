@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: covid-19-etl-cron
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: covid-19-etl
+            image: 587344276961.dkr.ecr.us-west-1.amazonaws.com/covid-19-etl-registry:latest
+          restartPolicy: OnFailure

@@ -7,9 +7,13 @@
 import boto3
 import pandas as pd
 import os 
+import datetime
+
 def load_to_csv(df, filename):
-    file_path = 'export/' + filename
-    df.to_csv(file_path, index=False)
+    # get current time and append to filename
+    now = datetime.datetime.now()
+    file_path = filename + '_' + now.strftime("%Y-%m-%d_%H-%M-%S") + '.csv'
+    df.to_csv('export/' + file_path, index=False)
     return file_path
     
 def upload_to_s3(bucket_name, file_path, object_name=None, s3_client=None, logger=None):
