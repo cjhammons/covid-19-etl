@@ -3,11 +3,7 @@
 # Email: curtishammons@gmail.com
 # Created: 2023-10-12
 #------------------------------------
-
-import psycopg2
 import pandas as pd
-
-
 
 # Extract county_population table into a DataFrame
 def extract_county_population(conn=None):
