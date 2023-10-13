@@ -1,11 +1,11 @@
-CREATE TABLE county_population(
+create TABLE IF NOT EXISTS public.county_population(
 	fips CHAR(5) NOT NULL PRIMARY KEY,
 	county_name TEXT NOT NULL,
 	state_name TEXT NOT NULL,
 	population_estimate_2020 INTEGER NOT NULL
 );
 
-INSERT INTO county_population (fips, county_name, state_name, population_estimate_2020)
+INSERT INTO public.county_population (fips, state_name, county_name, population_estimate_2020)
 VALUES
 	('01001', 'Alabama', 'Autauga County', 56145),
 	('01003', 'Alabama', 'Baldwin County', 229287),
@@ -3150,9 +3150,14 @@ VALUES
 	('56041', 'Wyoming', 'Uinta County', 20215),
 	('56043', 'Wyoming', 'Washakie County', 7760),
 	('56045', 'Wyoming', 'Weston County', 6743)
+ON CONFLICT (fips)
+DO UPDATE SET 
+	county_name = EXCLUDED.county_name,
+	state_name = EXCLUDED.state_name,
+	population_estimate_2020 = EXCLUDED.population_estimate_2020;
 ;
 
-CREATE TABLE mask_use_by_county(
+CREATE TABLE IF NOT EXISTS public.mask_use_by_county(
 	fips CHAR(5) NOT NULL PRIMARY KEY,
 	never REAL NOT NULL,
 	rarely REAL NOT NULL,
@@ -3161,7 +3166,7 @@ CREATE TABLE mask_use_by_county(
 	always REAL NOT NULL
 );
 
-INSERT INTO mask_use_by_county (fips, never, rarely, sometimes, frequently, always)
+INSERT INTO public.mask_use_by_county (fips, never, rarely, sometimes, frequently, always)
 VALUES
 	('01001', 0.053, 0.074, 0.134, 0.295, 0.444),
 	('01003', 0.083, 0.059, 0.098, 0.323, 0.436),
@@ -6307,7 +6312,7 @@ VALUES
 	('56045', 0.142, 0.129, 0.148, 0.207, 0.374)
 ;
 
-CREATE TABLE us_state_cumulative(
+CREATE TABLE IF NOT EXISTS public.us_state_cumulative(
 	date DATE NOT NULL,
 	state_fips CHAR(2) NOT NULL,
 	state_name TEXT NOT NULL,
@@ -6315,7 +6320,7 @@ CREATE TABLE us_state_cumulative(
 	deaths INTEGER NOT NULL
 );
 
-INSERT INTO us_state_cumulative (date, state_fips, state_name, cases, deaths)
+INSERT INTO public.us_state_cumulative (date, state_fips, state_name, cases, deaths)
 VALUES
 	('2020-01-21', '53', 'Washington', 1, 0),
 	('2020-01-22', '53', 'Washington', 1, 0),
