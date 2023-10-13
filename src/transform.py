@@ -26,6 +26,9 @@ def calculate_mask_wearer_score(df_mask_use, df_county_population):
     df_mask_score['Net Mask Wearer Score'] = (df_mask_score['Share Would Wear'] - df_mask_score['Share Would Not Wear']) * df_mask_score['population_estimate_2020']
     df_mask_score = df_mask_score.nlargest(10, 'Net Mask Wearer Score')
     df_mask_score['Rank'] = range(1, len(df_mask_score) + 1)
-    return df_mask_score[['Rank', 'fips', 'county_name', 'state_name', 'Share Would Wear', 'Share Would Not Wear', 'population_estimate_2020', 'Net Mask Wearer Score']].rename(columns={'fips': 'FIPS', 'county_name': 'County', 'state_name': 'State', 'population_estimate_2020': 'Population'})
+    return df_mask_score[['Rank', 'fips', 'county_name', 'state_name', 
+                          'Share Would Wear', 'Share Would Not Wear', 
+                          'population_estimate_2020', 'Net Mask Wearer Score']
+                           ].rename(columns={'fips': 'FIPS', 'county_name': 'County', 'state_name': 'State', 'population_estimate_2020': 'Population'})
 
 
