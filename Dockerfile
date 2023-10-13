@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code
 COPY src/ ./src/
+COPY config.ini .
 
 # Command to run the application
 CMD ["python", "src/main.py"]
