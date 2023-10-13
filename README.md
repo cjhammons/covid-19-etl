@@ -17,6 +17,8 @@ In the ``src`` directory there are 4 python files that contain the application l
 
 # Deployment
 
+I used the provided SQL script to provision an RDS database. The modified script can be found in ``sql/``
+
 The app is running as a CronJob in EKS set to execute on the hour. I used a bash script ``build/build-and-deploy.sh`` to build the docker image, deploy it to ECR, then deploy it from ECR to EKS.
 
 # Run Locally
