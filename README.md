@@ -7,9 +7,9 @@ This ETL is a dockerized application that uses batch processing to:
 
 The exported CSV files can also be found locally in the ``export/`` directory or in s3. To view in s3:
 
-- [Incremental Daily Cases](https://covid-19-etl.s3.amazonaws.com/incremental_data_2023-10-13_09-21-15.csv)
-- [Rolling Average](https://covid-19-etl.s3.amazonaws.com/rolling_data_2023-10-13_09-21-15.csv)
-- [Mask Score](https://covid-19-etl.s3.amazonaws.com/mask_score_2023-10-13_09-21-15.csv)
+- [Incremental Daily Cases](https://covid-19-etl.s3.us-west-1.amazonaws.com/export/incremental_data_2023-10-16_23-27-01.csv)
+- [Rolling Average](https://covid-19-etl.s3.us-west-1.amazonaws.com/export/rolling_data_2023-10-16_23-27-02.csv)
+- [Mask Score](https://covid-19-etl.s3.us-west-1.amazonaws.com/export/mask_score_2023-10-16_23-27-02.csv)
 
 You can also see a list of all objects in s3 using [this link ](https://covid-19-etl.s3.amazonaws.com/)
 
