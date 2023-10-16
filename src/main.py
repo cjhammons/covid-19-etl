@@ -86,13 +86,13 @@ def main():
     mask_score_path = load_to_csv(df_mask_score, 'mask_score')
 
     logger.info("Uploading %s to S3" % incremental_path)
-    upload_to_s3(bucket_name, incremental_path, s3_client=s3_client)
+    upload_to_s3(bucket_name, incremental_path, s3_client=s3_client, logger=logger)
 
     logger.info("Uploading %s to S3" % rolling_path)
-    upload_to_s3(bucket_name, rolling_path, s3_client=s3_client)
+    upload_to_s3(bucket_name, rolling_path, s3_client=s3_client, logger=logger)
 
     logger.info("Uploading %s to S3" % mask_score_path)
-    upload_to_s3(bucket_name, mask_score_path, s3_client=s3_client)
+    upload_to_s3(bucket_name, mask_score_path, s3_client=s3_client, logger=logger)
 
 if __name__ == "__main__":
     main()
