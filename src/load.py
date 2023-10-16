@@ -11,8 +11,11 @@ import datetime
 
 def load_to_csv(df, filename):
     # get current time and append to filename
+    if not os.path.exists('export'):
+        os.makedirs('export')
     now = datetime.datetime.now()
     file_path = filename + '_' + now.strftime("%Y-%m-%d_%H-%M-%S") + '.csv'
+
     df.to_csv('export/' + file_path, index=False)
     return file_path
     
